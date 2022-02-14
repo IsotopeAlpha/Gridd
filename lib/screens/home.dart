@@ -10,10 +10,12 @@ import 'package:marquee_widget/marquee_widget.dart';
 
 import 'comps.dart';
 
+//The main home tab
+
 class Home extends StatefulWidget {
   const Home({Key? key, required this.cart}) : super(key: key);
 
-  final List? cart;
+  final List cart;
   @override
   _HomeState createState() => _HomeState();
 }
@@ -49,7 +51,7 @@ class _HomeState extends State<Home> {
                           Icons.shopping_cart,
                           size: 45,
                         ),
-                        if (widget.cart!.isNotEmpty)
+                        if (widget.cart.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(left: 5),
                             child: CircleAvatar(
@@ -57,7 +59,7 @@ class _HomeState extends State<Home> {
                               backgroundColor: Colors.yellow,
                               foregroundColor: Colors.blue,
                               child: Text(
-                                widget.cart!.length.toString(),
+                                widget.cart.length.toString(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 12),
                               ),
@@ -70,7 +72,7 @@ class _HomeState extends State<Home> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Cart(
-                                    cart: widget.cart!,
+                                    cart: widget.cart,
                                   )));
                     },
                   )),
@@ -236,7 +238,7 @@ class _HomeState extends State<Home> {
                                         builder: (context) => DetailsPage(
                                             title: i.name,
                                             item: i,
-                                            cart: widget.cart!)));
+                                            cart: widget.cart)));
                               },
                             );
                           },
@@ -276,7 +278,7 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      Dishes(cart: widget.cart!)));
+                                      Dishes(cart: widget.cart)));
                         },
                       ),
                     ],
@@ -344,7 +346,7 @@ class _HomeState extends State<Home> {
                                 builder: (context) => DetailsPage(
                                     title: item.name,
                                     item: item,
-                                    cart: widget.cart!)));
+                                    cart: widget.cart)));
                       },
                     );
                   },
@@ -380,7 +382,7 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      Fashions(cart: widget.cart!)));
+                                      Fashions(cart: widget.cart)));
                         },
                       ),
                     ],
@@ -448,7 +450,7 @@ class _HomeState extends State<Home> {
                             builder: (context) => DetailsPage(
                                 title: item.name,
                                 item: item,
-                                cart: widget.cart!),
+                                cart: widget.cart),
                           ),
                         );
                       },
@@ -485,7 +487,7 @@ class _HomeState extends State<Home> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Phones(cart: widget.cart!),
+                              builder: (context) => Phones(cart: widget.cart),
                             ),
                           );
                         },
@@ -555,7 +557,7 @@ class _HomeState extends State<Home> {
                             builder: (context) => DetailsPage(
                                 title: item.name,
                                 item: item,
-                                cart: widget.cart!),
+                                cart: widget.cart),
                           ),
                         );
                       },
@@ -672,7 +674,7 @@ class _HomeState extends State<Home> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Fashions(cart: widget.cart!)));
+                          builder: (context) => Fashions(cart: widget.cart)));
                 },
               ),
             ),
@@ -700,7 +702,7 @@ class _HomeState extends State<Home> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Dishes(cart: widget.cart!)));
+                          builder: (context) => Dishes(cart: widget.cart)));
                 },
               ),
             ),
@@ -728,7 +730,7 @@ class _HomeState extends State<Home> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Phones(cart: widget.cart!)));
+                          builder: (context) => Phones(cart: widget.cart)));
                 },
               ),
             ),
@@ -756,7 +758,7 @@ class _HomeState extends State<Home> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Computers(cart: widget.cart!)));
+                          builder: (context) => Computers(cart: widget.cart)));
                 },
               ),
             ),

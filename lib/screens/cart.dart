@@ -3,6 +3,8 @@ import 'package:just_app/screens/checkout.dart';
 import 'package:just_app/screens/tab_manager.dart';
 import 'package:just_app/utils/utils.dart';
 
+//Class for viewing the cart
+
 class Cart extends StatefulWidget {
   final List cart;
 

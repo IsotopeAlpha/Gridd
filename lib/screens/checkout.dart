@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
 import 'cart.dart';
+
+//Class for checking out after selecting product(s).
 
 class Checkout extends StatefulWidget {
   final List cart;

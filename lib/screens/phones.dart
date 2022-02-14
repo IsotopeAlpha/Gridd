@@ -5,6 +5,8 @@ import 'package:just_app/utils/utils.dart';
 import 'cart.dart';
 import 'details.dart';
 
+//Product (Phones) class
+
 class Phones extends StatefulWidget {
   const Phones({Key? key, required this.cart}) : super(key: key);
 

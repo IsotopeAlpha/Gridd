@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/israelgayina/StudioProjects/just_app/build/flutter_plugin_android_lifecycle/intermediates/incremental/mergeDebugResources/merged.dir/values-ms/values-ms.xml",
+            "outputFile": "/Users/israelgayina/Documents/GitHub/Gridd/build/flutter_plugin_android_lifecycle/intermediates/incremental/mergeDebugResources/merged.dir/values-ms/values-ms.xml",
             "map": [
                 {
                     "source": "/Users/israelgayina/.gradle/caches/transforms-2/files-2.1/5f663b08eec19eef9a9d1af662d9025e/core-1.6.0/res/values-ms/values-ms.xml",
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "outputFile": "/Users/israelgayina/StudioProjects/just_app/build/flutter_plugin_android_lifecycle/intermediates/res/merged/debug/values-ms/values-ms.xml",
+            "outputFile": "/Users/israelgayina/Documents/GitHub/Gridd/build/flutter_plugin_android_lifecycle/intermediates/res/merged/debug/values-ms/values-ms.xml",
             "map": [
                 {
                     "source": "/Users/israelgayina/.gradle/caches/transforms-2/files-2.1/5f663b08eec19eef9a9d1af662d9025e/core-1.6.0/res/values-ms/values-ms.xml",

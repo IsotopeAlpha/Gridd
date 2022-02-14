@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:just_app/screens/profile.dart';
 import 'feed.dart';
 import 'home.dart';
 
@@ -18,7 +17,6 @@ class _TabsManagerState extends State<TabsManager> {
     const Home(
       cart: [],
     ),
-    const Profile()
   ];
 
   void _onItemTapped(int index) {
@@ -64,20 +62,6 @@ class _TabsManagerState extends State<TabsManager> {
                     fontFamily: 'Lobster'),
               ),
             ),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.amber,
-                  size: 20,
-                ),
-                // ignore: deprecated_member_use
-                title: Text(
-                  'Profile',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Lobster'),
-                )),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.blue,

@@ -6,6 +6,8 @@ import 'package:just_app/utils/utils.dart';
 import 'cart.dart';
 import 'details.dart';
 
+//Product (fashion) class
+
 class Fashions extends StatefulWidget {
   const Fashions({Key? key, required this.cart}) : super(key: key);
 

@@ -3,6 +3,8 @@ import 'package:hive/hive.dart';
 import 'package:just_app/screens/tab_manager.dart';
 import 'cart.dart';
 
+//Shows the deatails of the products when the product gets clicked on on the homepage.
+
 // ignore: must_be_immutable
 class DetailsPage extends StatefulWidget {
   DetailsPage({Key? key, required this.title, this.item, required this.cart})

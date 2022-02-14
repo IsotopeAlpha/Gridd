@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_app/screens/video_screen.dart';
 
+//Tab (feed) class handler
+
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
 

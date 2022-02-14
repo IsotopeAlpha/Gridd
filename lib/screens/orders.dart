@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:just_app/screens/tab_manager.dart';
 
+//Class to handle Orders
+
 class Orders extends StatefulWidget {
   const Orders({Key? key}) : super(key: key);
 
