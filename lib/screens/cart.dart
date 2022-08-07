@@ -1,114 +1,95 @@
+// ignore_for_file: depend_on_referenced_packages
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:just_app/screens/checkout.dart';
-import 'package:just_app/screens/tab_manager.dart';
+import 'package:just_app/screens/home.dart';
+import 'package:just_app/utils/colors.dart';
 import 'package:just_app/utils/utils.dart';
+import 'package:sizer/sizer.dart';
+
+import '../widgets/cart_widget.dart';
 
 //Class for viewing the cart
 
 class Cart extends StatefulWidget {
-  final List cart;
-
-  const Cart({Key? key, required this.cart}) : super(key: key);
+  Cart({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  // ignore: no_logic_in_create_state
-  _CartState createState() => _CartState(cart);
+  CartState createState() => CartState();
 }
 
-class _CartState extends State<Cart> with ChangeNotifier {
-  _CartState(cart);
+class CartState extends State<Cart> with ChangeNotifier {
+  List cart = [];
+  @override
+  void initState() {
+    if (Hive.box('UserDetails').get('cart') != null) {
+      cart = Hive.box('UserDetails').get('cart');
+    } else {
+      cart = [];
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    CartState().dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        leading: GestureDetector(
-          child: const Icon(Icons.arrow_back),
-          onTap: () {
-            dispose();
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const TabsManager()));
+        elevation: 0,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Home()));
           },
         ),
         title: const Text('Cart', style: TextStyle(fontFamily: 'Lobster')),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, right: 20),
-            child: Stack(
-              children: [
-                const Icon(
-                  Icons.shopping_cart,
-                  size: 35,
-                ),
-                if (widget.cart.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Colors.yellow,
-                      foregroundColor: Colors.blue,
-                      child: Text(
-                        widget.cart.length.toString(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                    ),
-                  )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: GestureDetector(
-              child: const Icon(
-                Icons.remove_shopping_cart,
-                size: 30,
-              ),
-              onTap: () {
-                setState(() {
-                  widget.cart.length = 0;
-                  notifyListeners();
-                });
-              },
-            ),
-          ),
-        ],
+        actions: [MyCart(cart: cart)],
       ),
       body: Container(
-        color: Colors.blueGrey,
-        child: widget.cart.isEmpty
-            ? const Center(
+        color: MyColors.primaryColor,
+        child: cart.isEmpty
+            ? Center(
                 child: Text(
                   'Cart Empty',
                   style: TextStyle(
-                      fontFamily: 'Lobster', color: Colors.white, fontSize: 16),
+                      fontFamily: 'Lobster',
+                      color: Colors.white,
+                      fontSize: 12.sp),
                 ),
               )
             : ListView.builder(
-                itemCount: widget.cart.length,
+                itemCount: cart.length,
                 itemBuilder: (context, index) {
-                  var item = widget.cart[index];
+                  var item = cart[index];
                   return Padding(
                     padding: const EdgeInsets.all(2),
                     child: Card(
-                      color: Colors.amber,
+                      color: MyColors.yellowColor,
                       elevation: 4,
                       child: ListTile(
                         leading: SizedBox(
-                          width: 50,
-                          height: 50,
+                          width: 30.w,
+                          height: 40.w,
                           child: item.img,
                         ),
                         title: Text(item.name),
                         trailing: GestureDetector(
                           child: const Icon(
                             Icons.remove_circle,
-                            color: Colors.red,
+                            color: MyColors.redColor,
                           ),
                           onTap: () {
                             setState(() {
-                              widget.cart.remove(item);
+                              cart.remove(item);
+
                               notifyListeners();
                             });
                           },
@@ -119,84 +100,27 @@ class _CartState extends State<Cart> with ChangeNotifier {
                 }),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.white,
+        backgroundColor: MyColors.whiteColor,
+        foregroundColor: MyColors.blackColor,
         onPressed: () {
-          if (widget.cart.isEmpty) {
-            Utils().showSnackbar(
-                context, 'Add at least one item to cart to checkout');
-          } else {
-            showAlertDialog(context);
-          }
+          // if (widget.cart.isEmpty) {
+          //   Utils().showSnackbar(
+          //       context, 'Add at least one item to cart to checkout');
+          // } else {
+          Utils().showAlertDialog(
+              context, "Checkout", "Proceed to Checkout?", "Proceed", () {
+            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Checkout()));
+          });
+          //}
         },
-        label: Row(
-          children: const [
-            Icon(Icons.double_arrow_sharp),
-            Text(
-              'Checkout',
-              style: TextStyle(fontFamily: 'Lobster', fontSize: 20),
-            ),
-          ],
+        icon: const Icon(Icons.double_arrow_sharp),
+        label: Text(
+          'Checkout',
+          style: TextStyle(fontFamily: 'Lobster', fontSize: 12.sp),
         ),
       ),
     );
-  }
-
-  showAlertDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: const Center(
-          child: Text(
-        'Checkout',
-        style:
-            TextStyle(fontFamily: 'Lobster', fontSize: 30, color: Colors.amber),
-      )),
-      backgroundColor: Colors.blueGrey,
-      content: const Text(
-        'Proceed to Payment?',
-        style: TextStyle(fontSize: 20, color: Colors.white),
-      ),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(Icons.arrow_back_ios),
-                    Text(
-                      'Back',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                )),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Checkout(cart: widget.cart)));
-              },
-              child: Row(
-                children: const [
-                  Text('Proceed to Payment'),
-                  Icon(Icons.arrow_forward_ios),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
   }
 }

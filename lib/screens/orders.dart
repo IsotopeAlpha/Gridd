@@ -1,7 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:just_app/screens/tab_manager.dart';
-
+import 'package:just_app/utils/colors.dart';
+import 'package:sizer/sizer.dart';
 //Class to handle Orders
 
 class Orders extends StatefulWidget {
@@ -12,13 +14,15 @@ class Orders extends StatefulWidget {
 }
 
 class OrdersState extends State<Orders> {
-  var orders = [];
-  late int? l;
+  var orders;
 
   @override
   void initState() {
-    orders = Hive.box('UserDetails').get('Orders');
-    l = Hive.box('UserDetails').get('OrdersLength');
+    if (Hive.box('UserDetails').get('Orders') != null) {
+      orders = Hive.box('UserDetails').get('Orders');
+    } else {
+      orders = [];
+    }
     super.initState();
   }
 
@@ -26,54 +30,46 @@ class OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        title: const Text(
+        backgroundColor: MyColors.primaryColor,
+        elevation: 0,
+        title: Text(
           'Orders',
-          style: TextStyle(fontSize: 30, fontFamily: 'Lobster'),
+          style: TextStyle(fontSize: 12.sp, fontFamily: 'Lobster'),
         ),
-        leading: GestureDetector(
-          child: const Icon(Icons.close),
-          onTap: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const TabsManager()));
-          },
-        ),
+        leading: const BackButton(),
       ),
-      body: Container(color: Colors.blueGrey, child: displayOrders()),
+      body: Container(
+        color: MyColors.primaryColor,
+        child: orders.length == 0 || orders.length == null
+            ? const Center(
+                child: Text(
+                  'No Orders Yet',
+                  style: TextStyle(fontFamily: 'Lobster'),
+                ),
+              )
+            : ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  var item = orders[index];
+                  return ListTile(
+                    leading: Image.asset(
+                      item.img,
+                      width: 30.w,
+                      height: 30.w,
+                    ),
+                    isThreeLine: true,
+                    subtitle: const Text('In Transit'),
+                    title: Text(
+                      item.name,
+                      style: const TextStyle(color: MyColors.whiteColor),
+                    ),
+                    trailing: Text(
+                      'GHs ${item.price}',
+                      style: const TextStyle(color: MyColors.whiteColor),
+                    ),
+                  );
+                }),
+      ),
     );
-  }
-
-  displayOrders() {
-    if (l == 0 || l == null) {
-      return const Center(
-        child: Text(
-          'No Orders Yet',
-          style: TextStyle(fontFamily: 'Lobster'),
-        ),
-      );
-    } else {
-      return ListView.builder(
-          itemCount: l,
-          itemBuilder: (context, index) {
-            var item = orders[index];
-            return ListTile(
-              leading: SizedBox(
-                width: 40,
-                height: 40,
-                child: item.img,
-              ),
-              isThreeLine: true,
-              subtitle: const Text('In Transit'),
-              title: Text(
-                item.name,
-                style: const TextStyle(color: Colors.white),
-              ),
-              trailing: Text(
-                'GHs ' + item.price.toString(),
-                style: const TextStyle(color: Colors.white),
-              ),
-            );
-          });
-    }
   }
 }

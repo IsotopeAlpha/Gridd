@@ -1,89 +1,54 @@
+// ignore_for_file: depend_on_referenced_packages
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:just_app/screens/tab_manager.dart';
 import 'package:just_app/utils/utils.dart';
-
-import 'cart.dart';
+import 'package:sizer/sizer.dart';
+import '../utils/colors.dart';
+import '../widgets/cart_widget.dart';
 import 'details.dart';
 
 //Product (Phones) class
 
 class Phones extends StatefulWidget {
-  const Phones({Key? key, required this.cart}) : super(key: key);
-
-  final List cart;
+  Phones({Key? key}) : super(key: key);
 
   @override
-  _PhonesState createState() => _PhonesState();
+  PhonesState createState() => PhonesState();
 }
 
-class _PhonesState extends State<Phones> with ChangeNotifier {
-  late List _phones;
+class PhonesState extends State<Phones> with ChangeNotifier {
+  final List _phones = Utils().populatePhones();
+  List cart = [];
 
   @override
   void initState() {
+    if (Hive.box('UserDetails').get('cart') != null) {
+      cart = Hive.box('UserDetails').get('cart');
+    } else {
+      cart = [];
+    }
     super.initState();
-    _phones = Utils().populatePhones();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    PhonesState().dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-          leading: GestureDetector(
-            child: const Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const TabsManager()));
-            },
-          ),
-          title: const Text('Phones And Accessories',
+          elevation: 0,
+          backgroundColor: MyColors.primaryColor,
+          leading: const BackButton(),
+          title: const Text('Phones and Accessories',
               style: TextStyle(fontFamily: 'Lobster')),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(top: 10, right: 20),
-                child: GestureDetector(
-                  child: Stack(
-                    children: [
-                      const Icon(
-                        Icons.shopping_cart,
-                        size: 35,
-                      ),
-                      if (widget.cart.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: CircleAvatar(
-                            radius: 10,
-                            backgroundColor: Colors.yellow,
-                            foregroundColor: Colors.blue,
-                            child: Text(
-                              widget.cart.length.toString(),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
-                  onTap: () {
-                    if (widget.cart.isNotEmpty) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Cart(
-                            cart: widget.cart,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                )),
-          ]),
+          actions: [MyCart(cart: cart)]),
       body: SizedBox(
-        width: width,
+        width: 100.w,
         child: GridView.builder(
-            scrollDirection: Axis.vertical,
             shrinkWrap: true,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
@@ -100,24 +65,28 @@ class _PhonesState extends State<Phones> with ChangeNotifier {
                       alignment: Alignment.center,
                       children: [
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            item.img,
+                            Image.asset(
+                              item.img,
+                              height: 35.w,
+                              fit: BoxFit.contain,
+                            ),
                             Text(
                               item.name,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.subtitle2,
                             )
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(5),
+                          padding: EdgeInsets.all(1.h),
                           child: Align(
                             alignment: Alignment.bottomRight,
                             child: Container(
                               color: Colors.white,
-                              width: 30,
-                              height: 30,
+                              width: 10.w,
+                              height: 10.w,
                               child: GestureDetector(
                                 child: const Icon(
                                   Icons.add_shopping_cart,
@@ -126,7 +95,8 @@ class _PhonesState extends State<Phones> with ChangeNotifier {
                                 ),
                                 onTap: () {
                                   setState(() {
-                                    widget.cart.add(item);
+                                    cart.add(item);
+                                    Hive.box('UserDetails').put('cart', item);
                                     notifyListeners();
                                   });
                                 },
@@ -134,24 +104,20 @@ class _PhonesState extends State<Phones> with ChangeNotifier {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: SizedBox(
-                            width: 100,
-                            height: 40,
-                            child: Card(
-                              elevation: 3,
-                              color: Colors.amber,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Center(
-                                child: Text(
-                                  'GHs ' + item.price.toString(),
-                                  style: const TextStyle(
-                                      backgroundColor: Colors.amber,
-                                      color: Colors.blue,
-                                      fontSize: 18),
-                                ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Card(
+                            elevation: 1,
+                            color: MyColors.yellowColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(1.w)),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 1.h),
+                              child: Text(
+                                'GHs ${item.price}',
+                                style: const TextStyle(
+                                    color: Colors.blue, fontSize: 18),
                               ),
                             ),
                           ),
@@ -163,10 +129,7 @@ class _PhonesState extends State<Phones> with ChangeNotifier {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                                title: item.name,
-                                item: item,
-                                cart: widget.cart)));
+                            builder: (context) => DetailsPage(item: item)));
                   },
                 ),
               );

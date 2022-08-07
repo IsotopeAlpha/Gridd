@@ -1,29 +1,44 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:just_app/screens/cart.dart';
 import 'package:just_app/screens/details.dart';
-import 'package:just_app/screens/dishes.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:just_app/screens/fashions.dart';
+import 'package:just_app/screens/login.dart';
+import 'package:just_app/screens/orders.dart';
 import 'package:just_app/screens/phones.dart';
 import 'package:just_app/utils/utils.dart';
+import 'package:just_app/widgets/cart_widget.dart';
+import 'package:just_app/widgets/featured_widget.dart';
 import 'package:marquee_widget/marquee_widget.dart';
-
+import 'package:sizer/sizer.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import '../utils/colors.dart';
 import 'comps.dart';
 
 //The main home tab
 
+// ignore: must_be_immutable
 class Home extends StatefulWidget {
-  const Home({Key? key, required this.cart}) : super(key: key);
+  Home({
+    Key? key,
+  }) : super(key: key);
 
-  final List cart;
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
+  List cart = [];
+
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    if (Hive.box('UserDetails').get('cart') != null) {
+      cart = Hive.box('UserDetails').get('cart');
+    } else {
+      cart = [];
+    }
+    super.initState();
   }
 
   @override
@@ -31,155 +46,120 @@ class _HomeState extends State<Home> {
     List fashion = Utils().populateFashions();
     List phones = Utils().populatePhones();
     List picks = Utils().populatePicks();
-    List dishes = Utils().populateDishes();
-    var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: MyColors.primaryColor,
         drawer: navigationDrawer(),
         appBar: AppBar(
-            backgroundColor: Colors.blueGrey,
+            elevation: 0,
+            backgroundColor: MyColors.primaryColor,
             title: const Text('Grid',
                 style: TextStyle(fontFamily: 'Lobster', fontSize: 40)),
-            actions: [
-              Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 20),
-                  child: GestureDetector(
-                    child: Stack(
-                      children: [
-                        const Icon(
-                          Icons.shopping_cart,
-                          size: 45,
-                        ),
-                        if (widget.cart.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.yellow,
-                              foregroundColor: Colors.blue,
-                              child: Text(
-                                widget.cart.length.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Cart(
-                                    cart: widget.cart,
-                                  )));
-                    },
-                  )),
-            ]),
+            actions: [MyCart(cart: cart)]),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  width: width,
-                  color: Colors.blue,
-                  child: const Text(
-                    'Trending',
-                    style: TextStyle(
-                        fontFamily: 'Lobster',
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold),
-                  )),
+                width: 100.w,
+                color: MyColors.blueColor,
+                child: Text(
+                  'Trending',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: 'Lobster',
+                    color: MyColors.redColor,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
               SizedBox(
-                width: width,
-                height: 70,
+                width: 100.w,
                 child: Marquee(
                   backwardAnimation: Curves.easeInBack,
                   directionMarguee: DirectionMarguee.oneDirection,
                   direction: Axis.horizontal,
                   child: Container(
-                    color: Colors.amber,
-                    child: Row(children: const [
-                      Icon(
+                    color: MyColors.yellowColor,
+                    padding: EdgeInsets.all(1.h),
+                    child: Row(children: [
+                      const Icon(
                         Icons.phone_android,
-                        color: Colors.blue,
+                        color: MyColors.blueColor,
                       ),
                       Text(
                         'Phones and Accessories',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
+                            color: MyColors.primaryColor),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.shop,
                         color: Colors.green,
                       ),
                       Text(
                         'Fashion',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.set_meal,
                         color: Colors.pink,
                       ),
                       Text(
                         'Dishes',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
+                            color: MyColors.primaryColor),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.computer,
                         color: Colors.red,
                       ),
                       Text(
                         'Computer and Accessories',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: MyColors.whiteColor),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.electrical_services,
                         color: Colors.purple,
                       ),
                       Text(
                         'Other Electrical Appliances',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
+                            color: MyColors.primaryColor),
                       ),
                     ]),
                   ),
                 ),
               ),
               Container(
-                  width: width,
-                  height: 100,
-                  color: Colors.blue,
-                  child: const Center(
+                  width: 100.w,
+                  height: 5.h,
+                  color: MyColors.blueColor,
+                  child: Center(
                     child: Text(
                       'Selected For You',
                       style: TextStyle(
                           fontFamily: 'Lobster',
-                          fontSize: 24,
-                          color: Colors.white,
+                          fontSize: 15.sp,
+                          color: MyColors.whiteColor,
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold),
                     ),
                   )),
               SizedBox(
-                width: width,
-                height: 200,
+                width: 100.w,
+                height: 30.h,
                 child: Stack(
                   children: [
                     CarouselSlider(
@@ -187,7 +167,6 @@ class _HomeState extends State<Home> {
                           reverse: true,
                           viewportFraction: 1.5,
                           enableInfiniteScroll: true,
-                          height: 200.0,
                           autoPlay: true,
                           scrollDirection: Axis.horizontal),
                       items: picks.map((i) {
@@ -195,50 +174,33 @@ class _HomeState extends State<Home> {
                           builder: (BuildContext context) {
                             return GestureDetector(
                               child: SizedBox(
-                                width: width * 0.8,
+                                width: 90.w,
                                 child: Stack(
                                   fit: StackFit.loose,
                                   alignment: Alignment.center,
                                   children: [
-                                    SizedBox(
-                                      width: width,
-                                      height: 200,
-                                      child: i.img,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: SizedBox(
-                                        width: 100,
-                                        height: 40,
-                                        child: Card(
-                                          elevation: 3,
-                                          color: Colors.amber,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: Center(
-                                            child: Text(
-                                              'GHs ' + i.price.toString(),
-                                              style: const TextStyle(
-                                                  backgroundColor: Colors.amber,
-                                                  color: Colors.blueGrey,
-                                                  fontSize: 18),
-                                            ),
-                                          ),
-                                        ),
+                                    Image.asset(i.img),
+                                    Container(
+                                      color: MyColors.whiteColor,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 3.w),
+                                      child: Text(
+                                        'GHs: ${i.price}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: MyColors.blackColor,
+                                            fontSize: 12.sp),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               onTap: () {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DetailsPage(
-                                            title: i.name,
-                                            item: i,
-                                            cart: widget.cart)));
+                                        builder: (context) =>
+                                            DetailsPage(item: i)));
                               },
                             );
                           },
@@ -248,325 +210,24 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Container(
-                  width: width,
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Dishes',
-                        style: TextStyle(
-                            fontFamily: 'Lobster',
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        child: const Text(
-                          'View All',
-                          style: TextStyle(
-                              fontFamily: 'Lobster',
-                              fontSize: 18,
-                              color: Colors.black45,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Dishes(cart: widget.cart)));
-                        },
-                      ),
-                    ],
-                  )),
-              SizedBox(
-                width: width,
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(5),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                    var item = dishes[index];
-                    return GestureDetector(
-                      child: SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  item.img,
-                                  Center(
-                                    child: Text(item.name),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SizedBox(
-                                width: 100,
-                                height: 40,
-                                child: Card(
-                                  elevation: 3,
-                                  color: Colors.amber,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Center(
-                                    child: Text(
-                                      'GHs ' + item.price.toString(),
-                                      style: const TextStyle(
-                                          backgroundColor: Colors.amber,
-                                          color: Colors.blue,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailsPage(
-                                    title: item.name,
-                                    item: item,
-                                    cart: widget.cart)));
-                      },
-                    );
+              Featured(
+                  cart: cart,
+                  title: "Phone",
+                  onViewTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Phones()));
                   },
-                ),
-              ),
-              Container(
-                  width: width,
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Fashion',
-                        style: TextStyle(
-                            fontFamily: 'Lobster',
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        child: const Text(
-                          'View All',
-                          style: TextStyle(
-                              fontFamily: 'Lobster',
-                              fontSize: 18,
-                              color: Colors.black45,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Fashions(cart: widget.cart)));
-                        },
-                      ),
-                    ],
-                  )),
-              SizedBox(
-                width: width,
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(5),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                    var item = fashion[index];
-                    return GestureDetector(
-                      child: SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  item.img,
-                                  Center(
-                                    child: Text(item.name),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SizedBox(
-                                width: 100,
-                                height: 40,
-                                child: Card(
-                                  elevation: 3,
-                                  color: Colors.amber,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Center(
-                                    child: Text(
-                                      'GHs ' + item.price.toString(),
-                                      style: const TextStyle(
-                                          backgroundColor: Colors.amber,
-                                          color: Colors.blue,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                                title: item.name,
-                                item: item,
-                                cart: widget.cart),
-                          ),
-                        );
-                      },
-                    );
+                  item: phones),
+              Featured(
+                  cart: cart,
+                  title: "Fashion",
+                  onViewTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Fashions()));
                   },
-                ),
-              ),
-              Container(
-                  width: width,
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Phones and Accessories',
-                        style: TextStyle(
-                            fontFamily: 'Lobster',
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        child: const Text(
-                          'View All',
-                          style: TextStyle(
-                              fontFamily: 'Lobster',
-                              fontSize: 18,
-                              color: Colors.black45,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Phones(cart: widget.cart),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  )),
+                  item: fashion),
               SizedBox(
-                width: width,
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(5),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                    var item = phones[index];
-                    return GestureDetector(
-                      child: SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Stack(
-                          children: [
-                            Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  item.img,
-                                  Center(
-                                    child: Text(item.name),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SizedBox(
-                                width: 100,
-                                height: 40,
-                                child: Card(
-                                  elevation: 3,
-                                  color: Colors.amber,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Center(
-                                    child: Text(
-                                      'GHs ' + item.price.toString(),
-                                      style: const TextStyle(
-                                          backgroundColor: Colors.amber,
-                                          color: Colors.blue,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                                title: item.name,
-                                item: item,
-                                cart: widget.cart),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                width: width,
+                width: 100.w,
                 child: Wrap(
                   children: [
                     Row(
@@ -627,139 +288,104 @@ class _HomeState extends State<Home> {
 
   navigationDrawer() {
     return Drawer(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: MyColors.primaryColor,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.white),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/images/back.jpeg',
-                    fit: BoxFit.fill,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  const Text(
-                    ' Categories',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amber,
-                        fontFamily: 'Lobster'),
-                  ),
-                ],
+              decoration: const BoxDecoration(color: MyColors.whiteColor),
+              child: SizedBox(
+                width: 100.w,
+                child: Text(
+                  ' Categories',
+                  style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: MyColors.yellowColor,
+                      fontFamily: 'Lobster'),
+                ),
               )),
-          Container(
-            color: Colors.black45,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: Row(
-                  children: const [
-                    Icon(Icons.shop, color: Colors.amber, size: 40),
-                    Text(
-                      ' Fashion',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lobster',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Fashions(cart: widget.cart)));
-                },
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Fashions()));
+            },
+            title: Text(
+              ' Fashion',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: 'Lobster',
+                color: MyColors.whiteColor,
+              ),
+            ),
+            leading: const Icon(
+              Icons.shop,
+              color: MyColors.yellowColor,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Computers()));
+            },
+            title: Text(
+              'Computers',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: 'Lobster',
+                color: MyColors.whiteColor,
+              ),
+            ),
+            leading: const Icon(
+              Icons.computer,
+              color: MyColors.yellowColor,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Phones()));
+            },
+            title: Text(
+              'Phones And Accessories',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: 'Lobster',
+                color: MyColors.whiteColor,
+              ),
+            ),
+            leading:
+                const Icon(Icons.phone_android, color: MyColors.yellowColor),
+          ),
+          Divider(
+            color: MyColors.whiteColor,
+            thickness: 1.w,
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Orders()));
+            },
+            title: Text(
+              'My Orders',
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: 'Lobster',
+                color: MyColors.whiteColor,
               ),
             ),
           ),
-          Container(
-            color: Colors.black45,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: Row(
-                  children: const [
-                    Icon(Icons.set_meal, color: Colors.amber, size: 40),
-                    Text(
-                      ' Dishes',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lobster',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Dishes(cart: widget.cart)));
-                },
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black45,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: Row(
-                  children: const [
-                    Icon(Icons.phone_android, color: Colors.amber, size: 40),
-                    Text(
-                      ' Phones and Accessories',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lobster',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Phones(cart: widget.cart)));
-                },
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black45,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: Row(
-                  children: const [
-                    Icon(Icons.computer, color: Colors.amber, size: 40),
-                    Text(
-                      ' Computer and Accessories',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lobster',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Computers(cart: widget.cart)));
-                },
+          ListTile(
+            leading: const Icon(Icons.logout),
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
+            },
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontFamily: 'Lobster',
+                color: MyColors.whiteColor,
               ),
             ),
           ),

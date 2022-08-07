@@ -1,5 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:just_app/models/products.dart';
+import 'package:sizer/sizer.dart';
+import 'colors.dart';
 
 class Utils {
   showProgress(BuildContext context) {
@@ -19,57 +23,23 @@ class Utils {
   List populatePicks() {
     var list = [
       Product(
-          'T-shirt',
-          Image.asset(
-            'assets/images/fashion/shirt.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          45),
+          name: 'T-shirt', img: 'assets/images/fashion/shirt.jpeg', price: 45),
       Product(
-          'Air Force 1',
-          Image.asset(
-            'assets/images/fashion/air1.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          200),
+          name: 'Air Force 1',
+          img: 'assets/images/fashion/air1.jpeg',
+          price: 200),
       Product(
-          'Beef Burger without beef',
-          Image.asset(
-            "assets/images/dishes/dish4.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          10),
+          name: 'Infinix Hot 10 Lite',
+          img: 'assets/images/phones/InfinixHot10Lite.jpg',
+          price: 550),
       Product(
-          'Fried Rice and Chicken',
-          Image.asset(
-            "assets/images/dishes/dish5.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          25),
+          name: 'IPhone 6',
+          img: 'assets/images/phones/iPhone6.jpg',
+          price: 700),
       Product(
-          'Infinix Hot 10 Lite',
-          Image.asset(
-            'assets/images/phones/InfinixHot10Lite.jpg',
-            width: 150,
-            height: 150,
-          ),
-          550),
-      Product(
-          'IPhone 6',
-          Image.asset(
-            'assets/images/phones/iPhone6.jpg',
-            width: 150,
-            height: 150,
-          ),
-          700),
+          name: 'Hp Pavillion 15 7th Generation',
+          img: 'assets/images/comps/hp_pavillion15.png',
+          price: 4500),
     ];
     return list;
   }
@@ -77,121 +47,33 @@ class Utils {
   List populatePhones() {
     var list = <Product>[
       Product(
-          'Infinix Hot 10 Lite',
-          Image.asset(
-            'assets/images/phones/InfinixHot10Lite.jpg',
-            width: 150,
-            height: 150,
-          ),
-          550),
+          name: 'Infinix Hot 10 Lite',
+          img: 'assets/images/phones/InfinixHot10Lite.jpg',
+          price: 550),
       Product(
-          'IPhone 6',
-          Image.asset(
-            'assets/images/phones/iPhone6.jpg',
-            width: 150,
-            height: 150,
-          ),
-          700),
+          name: 'IPhone 6',
+          img: 'assets/images/phones/iPhone6.jpg',
+          price: 700),
       Product(
-          'IPhone 7 Plus',
-          Image.asset(
-            'assets/images/phones/iPhone7Plus.jpg',
-            width: 150,
-            height: 150,
-          ),
-          1200),
+          name: 'IPhone 7 Plus',
+          img: 'assets/images/phones/iPhone7Plus.jpg',
+          price: 1200),
       Product(
-          'I7Ws Earpods',
-          Image.asset(
-            'assets/images/phones/i7ws.jpg',
-            width: 150,
-            height: 150,
-          ),
-          70),
+          name: 'I7Ws Earpods',
+          img: 'assets/images/phones/i7ws.jpg',
+          price: 70),
       Product(
-          'Wired Earpiece',
-          Image.asset(
-            'assets/images/phones/wired_earpiece.jpg',
-            width: 150,
-            height: 150,
-          ),
-          15),
+          name: 'Wired Earpiece',
+          img: 'assets/images/phones/wired_earpiece.jpg',
+          price: 15),
       Product(
-          'Rock Wireless Earpiece',
-          Image.asset(
-            'assets/images/phones/Rock.jpg',
-            width: 150,
-            height: 150,
-          ),
-          30),
+          name: 'Rock Wireless Earpiece',
+          img: 'assets/images/phones/Rock.jpg',
+          price: 30),
       Product(
-          'IPhone 12 Screen Protector',
-          Image.asset(
-            'assets/images/phones/iphone12pro.jpg',
-            width: 120,
-            height: 120,
-          ),
-          30)
-    ];
-    return list;
-  }
-
-  List<Product> populateDishes() {
-    var list = <Product>[
-      Product(
-          'Chicken Zinger',
-          Image.asset(
-            "assets/images/dishes/dish1.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          15),
-      Product(
-          'Chicken Zinger without chicken',
-          Image.asset(
-            "assets/images/dishes/dish2.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          20),
-      Product(
-          'Rice',
-          Image.asset(
-            "assets/images/dishes/dish3.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          10),
-      Product(
-          'Beef Burger without beef',
-          Image.asset(
-            "assets/images/dishes/dish4.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          10),
-      Product(
-          'Fried Rice and Chicken',
-          Image.asset(
-            "assets/images/dishes/dish5.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          25),
-      Product(
-          'Fufu and chicken soup',
-          Image.asset(
-            "assets/images/dishes/dish6.jpg",
-            fit: BoxFit.fill,
-            width: 120,
-            height: 120,
-          ),
-          25),
+          name: 'IPhone 12 Screen Protector',
+          img: 'assets/images/phones/iphone12pro.jpg',
+          price: 30)
     ];
     return list;
   }
@@ -199,77 +81,30 @@ class Utils {
   List<Product> populateFashions() {
     var list = <Product>[
       Product(
-          'T-shirt',
-          Image.asset(
-            'assets/images/fashion/shirt.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          45),
+          name: 'T-shirt', img: 'assets/images/fashion/shirt.jpeg', price: 45),
       Product(
-          'Air Force 1',
-          Image.asset(
-            'assets/images/fashion/air1.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          200),
+          name: 'Air Force 1',
+          img: 'assets/images/fashion/air1.jpeg',
+          price: 200),
       Product(
-          'Air Force 1',
-          Image.asset(
-            'assets/images/fashion/air3.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          200),
+          name: 'Air Force 1',
+          img: 'assets/images/fashion/air3.jpeg',
+          price: 200),
+      Product(name: 'Short', img: 'assets/images/fashion/short.jpg', price: 35),
       Product(
-          'Short',
-          Image.asset(
-            'assets/images/fashion/short.jpg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          35),
+          name: 'Trouser', img: 'assets/images/fashion/trouser.jpg', price: 50),
       Product(
-          'Trouser',
-          Image.asset(
-            'assets/images/fashion/trouser.jpg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          50),
+          name: 'Necklace',
+          img: 'assets/images/fashion/necklace.jpeg',
+          price: 15),
       Product(
-          'Necklace',
-          Image.asset(
-            'assets/images/fashion/necklace.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          15),
+          name: 'Air Force 1',
+          img: 'assets/images/fashion/air2.jpeg',
+          price: 250),
       Product(
-          'Air Force 1',
-          Image.asset(
-            'assets/images/fashion/air2.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          250),
-      Product(
-          'Air Force 1',
-          Image.asset(
-            'assets/images/fashion/air4.jpeg',
-            fit: BoxFit.contain,
-            width: 150,
-            height: 150,
-          ),
-          300),
+          name: 'Air Force 1',
+          img: 'assets/images/fashion/air4.jpeg',
+          price: 300),
     ];
     return list;
   }
@@ -277,50 +112,25 @@ class Utils {
   List populateComps() {
     var list = [
       Product(
-          'Dell Inspirion 15 5th Generation',
-          Image.asset(
-            'assets/images/comps/dell_inspirion15.jpeg',
-            fit: BoxFit.contain,
-            width: 120,
-            height: 120,
-          ),
-          3500),
+          name: 'Dell Inspirion 15 5th Generation',
+          img: 'assets/images/comps/dell_inspirion15.jpeg',
+          price: 3500),
       Product(
-          'Hp Pavillion 15 7th Generation',
-          Image.asset(
-            'assets/images/comps/hp_pavillion15.png',
-            fit: BoxFit.contain,
-            width: 120,
-            height: 120,
-          ),
-          4500),
+          name: 'Hp Pavillion 15 7th Generation',
+          img: 'assets/images/comps/hp_pavillion15.png',
+          price: 4500),
       Product(
-          'Hp Elite Desktop 7th Generation',
-          Image.asset(
-            'assets/images/comps/hp_elitedesk_i7.jpeg',
-            fit: BoxFit.contain,
-            width: 120,
-            height: 120,
-          ),
-          4000),
+          name: 'Hp Elite Desktop 7th Generation',
+          img: 'assets/images/comps/hp_elitedesk_i7.jpeg',
+          price: 4000),
       Product(
-          'Apple Macbook Pro 2022',
-          Image.asset(
-            'assets/images/comps/macbook_pro.jpg',
-            fit: BoxFit.contain,
-            width: 120,
-            height: 120,
-          ),
-          6000),
+          name: 'Apple Macbook Pro 2022',
+          img: 'assets/images/comps/macbook_pro.jpg',
+          price: 6000),
       Product(
-          'Wireless Mouse and Keyboard',
-          Image.asset(
-            'assets/images/comps/wireless_mouse_keyboard.jpeg',
-            fit: BoxFit.contain,
-            width: 120,
-            height: 120,
-          ),
-          3500),
+          name: 'Wireless Mouse and Keyboard',
+          img: 'assets/images/comps/wireless_mouse_keyboard.jpeg',
+          price: 3500),
     ];
     return list;
   }
@@ -329,11 +139,76 @@ class Utils {
     SnackBar snackBar = SnackBar(
       content: Text(
         msg,
-        style: const TextStyle(color: Colors.blue),
+        style: TextStyle(
+            color: MyColors.primaryColor,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.bold),
         softWrap: true,
       ),
-      backgroundColor: Colors.amber,
+      backgroundColor: MyColors.whiteColor,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  showAlertDialog(BuildContext context, String? title, String? msg,
+      String? fwrdBtn, Function() onfwrdBtnClick) {
+    AlertDialog alert = AlertDialog(
+      title: Center(
+          child: Text(
+        title ?? "",
+        style: TextStyle(
+            fontFamily: 'Lobster', fontSize: 15.sp, color: MyColors.blackColor),
+      )),
+      backgroundColor: MyColors.primaryColor,
+      content: Text(
+        msg ?? "",
+        style: TextStyle(fontSize: 10.sp, color: Colors.white),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(
+                      Icons.arrow_back_ios,
+                    ),
+                    Text(
+                      'Back',
+                    ),
+                  ],
+                )),
+            TextButton(
+              onPressed: () {
+                onfwrdBtnClick();
+              },
+              child: fwrdBtn != null
+                  ? Row(
+                      children: [
+                        Text(
+                          fwrdBtn,
+                          style: const TextStyle(color: MyColors.yellowColor),
+                        ),
+                        const Icon(Icons.arrow_forward_ios,
+                            color: MyColors.yellowColor),
+                      ],
+                    )
+                  : Container(),
+            ),
+          ],
+        ),
+      ],
+    );
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
 }

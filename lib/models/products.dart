@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
-
 //Products model
 
 class Product {
-  String name;
-  Image img;
+  String name, img;
   int price;
 
-  Product(this.name, this.img, this.price);
+  Product({required this.name, required this.img, required this.price});
 }

@@ -1,6 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:just_app/screens/tab_manager.dart';
+import 'package:just_app/screens/intro_page.dart';
+import 'package:sizer/sizer.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -14,6 +17,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: TabsManager());
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(home: const IntroPage());
+      },
+    );
   }
 }
